@@ -4,4 +4,6 @@
     <string name="home_capitalize">Home</string>
     <string name="saved_capitalize">Saved</string>
     <string name="icon">icon</string>
+    <string name="germany_capitalize">Germany</string>
+    <string name="error_capitalize">Error</string>
 </resources>

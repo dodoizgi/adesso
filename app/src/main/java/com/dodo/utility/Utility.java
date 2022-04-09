@@ -1,6 +1,10 @@
 package com.dodo.utility;
 
 
+import android.app.Activity;
+import android.view.Window;
+import android.view.WindowManager;
+
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -13,6 +17,38 @@ public class Utility {
 
 	private static final String FORMAT = "%.2f";
 
+	/**
+	 * Function: setFullscreen()
+	 */
+	public static void setFullscreen(Activity act) {
+
+		act.requestWindowFeature(Window.FEATURE_NO_TITLE);
+		act.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+	}
+
+	/**
+	 * Function: KeepActivityOnScreen()
+	 */
+	public static void KeepActivityOnScreen(Activity activity) {
+
+		activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+	}
+
+	/**
+	 * Function: DisableKeyGuard()
+	 */
+	public static void DisableKeyGuard(Activity activity) {
+
+		activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD);
+	}
+
+	/**
+	 * Function: DisableKeyboard()
+	 */
+	public static void DisableKeyboard(Activity activity) {
+
+		activity.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
+	}
 
 	/**
 	 * Function: convertJson()
