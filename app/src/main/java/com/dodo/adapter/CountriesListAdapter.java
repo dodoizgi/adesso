@@ -6,13 +6,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
+import com.dodo.model.Country;
+
 import java.util.ArrayList;
 
 
 public class CountriesListAdapter extends BaseAdapter {
 
     private final LayoutInflater inflater;
-
+    private ArrayList<Country> countries;
     /**
      * CountriesListAdapter()
      */
@@ -24,12 +26,18 @@ public class CountriesListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
+        if (countries == null)
+            return 0;
 
+        return countries.size();
     }
 
     @Override
     public Object getItem(int position) {
+        if (countries == null || position > countries.size())
+            return null;
 
+        return countries.get(position);
     }
 
     @Override
