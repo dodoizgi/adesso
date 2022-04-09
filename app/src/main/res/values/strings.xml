@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Adesso</string>
+    <string name="countries_capitalize">Countries</string>
+    <string name="home_capitalize">Home</string>
+    <string name="saved_capitalize">Saved</string>
+    <string name="icon">icon</string>
+</resources>
