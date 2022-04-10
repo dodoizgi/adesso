@@ -2,15 +2,30 @@ package com.dodo.utility;
 
 
 import android.app.Activity;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.dodo.adesso.R;
+import com.dodo.model.Country;
+import com.dodo.model.CountryList;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class Utility {
@@ -95,24 +110,35 @@ public class Utility {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T> T[] getArray(final String entity, final Class<T> c) {
+	public static ArrayList<Country> getArray(final String responseBody)throws JSONException {
 
-		if (entity == null)
-			return null;
+			ArrayList<Country> countries = new ArrayList<>();
+			JSONObject jsonObject = new JSONObject(responseBody);
+			JSONArray jsonArray = jsonObject.getJSONArray("data");
+			for (int i=0; i< jsonArray.length(); i++) {
+				JSONObject object = jsonArray.getJSONObject(i);
+				Country country = new Country();
 
-		GsonBuilder builder = new GsonBuilder();
+				String code = object.getString("code");
+				String currencyCodes = object.getString("currencyCodes");
+				String name = object.getString("name");
+				String wikiDataId = object.getString("wikiDataId");
 
-		T[] array;
-		T[] objArray;
+				country.setCode(code);
+				country.setCurrencyCodes(Collections.singletonList(currencyCodes));
+				country.setWikiDataId(wikiDataId);
+				country.setName(name);
 
-		try {
-			array = (T[]) Array.newInstance(c, 0);
-			objArray = (T[]) builder.create().fromJson(entity, array.getClass());
-		} catch (Exception e) {
-			return null;
-		}
+				countries.add(country);
 
-		return objArray;
+				System.out.println("code : " + code + " currencyCodes : " + currencyCodes +
+						" name : " + name + " wiki : " + wikiDataId);
+			}
+
+			System.out.println("countries : " + countries);
+
+
+
+		return countries;
 	}
-
 }

@@ -1,12 +1,16 @@
 package com.dodo.database;
 
+import com.dodo.adesso.MainActivity;
 import com.dodo.model.Country;
 import com.dodo.utility.Utility;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class CountriesDatabase {
-    private final ArrayList<Country> countryList = new ArrayList<>();
+    private ArrayList<Country> countryList = new ArrayList<>();
 
     /**
      * Function: getCountries()
@@ -19,23 +23,14 @@ public class CountriesDatabase {
     /**
      * Function: setCountryStr()
      */
-     public void setCountryStr(String data) {
+     public void setCountryStr(String data) throws JSONException {
 
          this.countryList.clear();
 
          if (data == null)
          return;
 
-         Country[] countries = Utility.getArray(data, Country.class);
-         if (countries == null)
-         return;
-
-         for (Country country : countries) {
-             if (country == null)
-                continue;
-
-             addCountry(country);
-         }
+         countryList = Utility.getArray(data);
      }
 
     /**

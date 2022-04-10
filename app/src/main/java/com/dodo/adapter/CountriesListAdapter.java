@@ -5,19 +5,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.dodo.adesso.R;
 import com.dodo.model.Country;
 
 import java.util.ArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 public class CountriesListAdapter extends BaseAdapter {
 
     private final LayoutInflater inflater;
     private final ArrayList<Country> countries;
+    private boolean clicked = false;
+
     /**
      * CountriesListAdapter()
      */
@@ -52,6 +56,8 @@ public class CountriesListAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
 
         final Country country = countries.get(position);
+        System.out.println("aaaaaaaaa");
+
         ViewHolder holder;
 
         if (convertView == null) {
@@ -74,8 +80,18 @@ public class CountriesListAdapter extends BaseAdapter {
         if (country.getName() != null)
             holder.countryName.setText(country.getName());
 
-        ViewHolder finalHolder = holder;
-        holder.savedButton.setOnClickListener(v -> finalHolder.savedButton.setBackgroundResource(R.drawable.ic_star));
+
+        holder.savedButton.setOnClickListener(v -> {
+            if (clicked){
+                viewHolder.savedButton.setBackgroundResource(R.drawable.ic_star_gray);
+                changeClicked();
+            }else {
+                viewHolder.savedButton.setBackgroundResource(R.drawable.ic_star);
+                changeClicked();
+            }
+
+
+        });
 
         //convertView.setOnClickListener(v -> );
 
@@ -83,12 +99,15 @@ public class CountriesListAdapter extends BaseAdapter {
         return convertView;
     }
 
-
+    /**
+     * ViewHolder()
+     */
     public static class ViewHolder {
-
         TextView countryName;
-        Button savedButton;
-
+        ConstraintLayout savedButton;
     }
 
+    private void changeClicked(){
+        clicked = !clicked;
+    }
 }
