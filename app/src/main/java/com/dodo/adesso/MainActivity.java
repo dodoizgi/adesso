@@ -10,19 +10,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.dodo.adapter.CountriesListAdapter;
-import com.dodo.model.Country;
+import com.dodo.model.Countries;
 import com.dodo.utility.Utility;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 
 import com.dodo.database.CountriesDatabase;
-import com.google.gson.Gson;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -40,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout mainSavedButton;
     private CountriesDatabase countriesDatabase = new CountriesDatabase();
     private ListView countriesListView;
+    private boolean homeOrSave= false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +64,16 @@ public class MainActivity extends AppCompatActivity {
         mainHomeButton = findViewById(R.id.main_home_button);
         mainSavedButton = findViewById(R.id.main_saved_button);
         countriesListView = findViewById(R.id.countries_list_view);
+
+        mainHomeButton.setOnClickListener(v -> {
+            homeOrSave=false;
+            updateCountriesList();
+        });
+
+        mainSavedButton.setOnClickListener(v -> {
+            homeOrSave = true;
+            updateCountriesList();
+        });
     }
 
     /**
@@ -76,11 +81,17 @@ public class MainActivity extends AppCompatActivity {
      *  updating the List of Countries
      */
     public void updateCountriesList() {
-
-        ArrayList<Country> countriesList =  countriesDatabase.getCountries();
-        CountriesListAdapter countriesListAdapter = new CountriesListAdapter(this, countriesList);
+        CountriesListAdapter countriesListAdapter = new CountriesListAdapter(MainActivity.this,this, getHomeOrSavedCountryList(),countriesDatabase);
         countriesListView.setAdapter(countriesListAdapter);
+    }
 
+    public ArrayList<Countries> getHomeOrSavedCountryList(){
+
+        ArrayList<Countries> countriesHomeOrSavedList = countriesDatabase.getCountries();
+        if (homeOrSave)
+            countriesHomeOrSavedList = countriesDatabase.getSavedCountries();
+
+        return  countriesHomeOrSavedList;
     }
 
     /**
@@ -116,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                     if (responseBody != null)
                         string = responseBody.string();
 
-                    countriesDatabase.setCountryStr(string);
+                    countriesDatabase.setCountriesStr(string);
                     updateCountriesList();
 
                 } catch (Exception e) {

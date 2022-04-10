@@ -2,13 +2,11 @@ package com.dodo.utility;
 
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.dodo.adesso.R;
+import com.dodo.model.Countries;
 import com.dodo.model.Country;
-import com.dodo.model.CountryList;
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
 import com.google.gson.Gson;
@@ -19,10 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -109,15 +103,19 @@ public class Utility {
 		return builder.toJson(t);
 	}
 
-	@SuppressWarnings("unchecked")
-	public static ArrayList<Country> getArray(final String responseBody)throws JSONException {
 
-			ArrayList<Country> countries = new ArrayList<>();
+	/**
+	 * Function: getArray()
+	 */
+	@SuppressWarnings("unchecked")
+	public static ArrayList<Countries> getArray(final String responseBody)throws JSONException {
+
+			ArrayList<Countries> countries = new ArrayList<>();
 			JSONObject jsonObject = new JSONObject(responseBody);
 			JSONArray jsonArray = jsonObject.getJSONArray("data");
 			for (int i=0; i< jsonArray.length(); i++) {
 				JSONObject object = jsonArray.getJSONObject(i);
-				Country country = new Country();
+				Countries country = new Countries();
 
 				String code = object.getString("code");
 				String currencyCodes = object.getString("currencyCodes");
@@ -140,5 +138,40 @@ public class Utility {
 
 
 		return countries;
+	}
+
+	/**
+	 * Function: getArray()
+	 */
+	@SuppressWarnings("unchecked")
+	public static Country getCountry(final String responseBody)throws JSONException {
+
+		JSONObject object = new JSONObject(responseBody.substring(responseBody.indexOf("{"),responseBody.lastIndexOf("}")+1));
+		JSONArray jsonArray = object.toJSONArray(object.names());
+		Country country = new Country();
+		object = jsonArray.getJSONObject(0);
+
+		String capital = object.getString("capital");
+		String code = object.getString("code");
+		String callingCode = object.getString("callingCode");
+		String flagImageUri = object.getString("flagImageUri");
+		String numRegions = object.getString("numRegions");
+		String currencyCodes = object.getString("currencyCodes");
+		String name = object.getString("name");
+		String wikiDataId = object.getString("wikiDataId");
+
+		country.setNumRegions(numRegions);
+		country.setFlagImageUri(flagImageUri);
+		country.setCapital(capital);
+		country.setCallingCode(callingCode);
+		country.setCode(code);
+		country.setCurrencyCodes(Collections.singletonList(currencyCodes));
+		country.setWikiDataId(wikiDataId);
+		country.setName(name);
+
+		System.out.println("code : " + code + " currencyCodes : " + currencyCodes +
+				" name : " + name + " wiki : " + wikiDataId);
+
+		return country;
 	}
 }

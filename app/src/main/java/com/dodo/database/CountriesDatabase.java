@@ -1,46 +1,71 @@
 package com.dodo.database;
 
-import com.dodo.adesso.MainActivity;
+import com.dodo.model.Countries;
 import com.dodo.model.Country;
 import com.dodo.utility.Utility;
 
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class CountriesDatabase {
-    private ArrayList<Country> countryList = new ArrayList<>();
+    private ArrayList<Countries> countriesList = new ArrayList<>();
+    private ArrayList<Countries> savedCountriesList = new ArrayList<>();
+    private Country country ;
 
     /**
      * Function: getCountries()
      */
-    public ArrayList<Country> getCountries() {
+    public ArrayList<Countries> getCountries() {
 
-        return countryList;
+        return countriesList;
     }
 
     /**
-     * Function: setCountryStr()
+     * Function: getCountryList()
      */
-     public void setCountryStr(String data) throws JSONException {
+    public Country getCountry() {
 
-         this.countryList.clear();
+        return country;
+    }
+
+    /**
+     * Function: getCountries()
+     */
+    public ArrayList<Countries> getSavedCountries() {
+
+        return savedCountriesList;
+    }
+
+    /**
+     * Function: addSavedCountries()
+     */
+    public void addSavedCountries(Countries countries) {
+
+        savedCountriesList.add(countries);
+    }
+
+    /**
+     * Function: setCountriesStr()
+     */
+     public void setCountriesStr(String data) throws JSONException {
+
+         this.countriesList.clear();
 
          if (data == null)
          return;
 
-         countryList = Utility.getArray(data);
+         countriesList = Utility.getArray(data);
      }
 
     /**
-     * Function: addCountry()
+     * Function: setCountryStr()
      */
-    public void addCountry(Country country) {
+    public void setCountryStr(String data) throws JSONException {
 
-        if (country == null)
+        if (data == null)
             return;
 
-        countryList.add(country);
+        country = Utility.getCountry(data);
     }
 }
