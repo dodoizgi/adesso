@@ -105,9 +105,7 @@ public class CountriesListAdapter extends BaseAdapter {
             changeClicked();
         });
 
-        convertView.setOnClickListener(v -> {
-            getCountry(countries.getCode());
-        });
+        convertView.setOnClickListener(v -> getCountry(countries.getCode()));
 
 
         return convertView;

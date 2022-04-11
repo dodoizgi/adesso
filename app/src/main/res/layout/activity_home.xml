@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/lightest_gray_transparent2"
-    tools:context=".MainActivity">
+    tools:context=".HomeActivity">
 
     <TextView
         android:id="@+id/countries_text"
@@ -35,6 +35,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/countries_text">
 
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/countries_view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </androidx.viewpager.widget.ViewPager>
+
         <ListView
             android:id="@+id/countries_list_view"
             android:layout_width="match_parent"
@@ -42,7 +53,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:listitem="@layout/countries_list_item"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout
@@ -70,7 +83,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="10dp"
                 android:contentDescription="@string/icon"
-                app:srcCompat="@drawable/ic_home_icon" />
+                app:srcCompat="@drawable/ic_home_icon_white" />
 
         </LinearLayout>
 

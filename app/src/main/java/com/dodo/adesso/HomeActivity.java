@@ -2,12 +2,10 @@ package com.dodo.adesso;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.dodo.adapter.CountriesListAdapter;
 import com.dodo.model.Countries;
@@ -26,13 +24,12 @@ import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 
-public class MainActivity extends AppCompatActivity {
+public class HomeActivity extends AppCompatActivity {
 
-    private TextView countriesTextView;
-    private ConstraintLayout countriesLayout;
     private LinearLayout mainHomeButton;
     private LinearLayout mainSavedButton;
     private CountriesDatabase countriesDatabase = new CountriesDatabase();
+    private CountriesListAdapter countriesListAdapter;
     private ListView countriesListView;
     private boolean homeOrSave= false;
 
@@ -47,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
         createMainActivityLayouts();
         getCountries();
-        updateCountriesList();
+        createCountriesList();
 
     }
 
@@ -57,10 +54,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void createMainActivityLayouts() {
 
-        setContentView(R.layout.activity_main);
-
-        countriesTextView = findViewById(R.id.countries_text);
-        countriesLayout = findViewById(R.id.countries_layout);
+        setContentView(R.layout.activity_home);
         mainHomeButton = findViewById(R.id.main_home_button);
         mainSavedButton = findViewById(R.id.main_saved_button);
         countriesListView = findViewById(R.id.countries_list_view);
@@ -77,14 +71,28 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Function: createCountriesList
+     *  creating the List of Countries
+     */
+    public void createCountriesList() {
+        countriesListAdapter = new CountriesListAdapter(HomeActivity.this,this, getHomeOrSavedCountryList(),countriesDatabase);
+        countriesListView.setAdapter(countriesListAdapter);
+    }
+
+    /**
      * Function: updateCountriesList
      *  updating the List of Countries
      */
     public void updateCountriesList() {
-        CountriesListAdapter countriesListAdapter = new CountriesListAdapter(MainActivity.this,this, getHomeOrSavedCountryList(),countriesDatabase);
-        countriesListView.setAdapter(countriesListAdapter);
+        countriesListAdapter = new CountriesListAdapter(HomeActivity.this,this, getHomeOrSavedCountryList(),countriesDatabase);
+        countriesListView.removeAllViewsInLayout();
+        countriesListView.refreshDrawableState();
     }
 
+
+    /**
+     * Function: getHomeOrSavedCountryList
+     */
     public ArrayList<Countries> getHomeOrSavedCountryList(){
 
         ArrayList<Countries> countriesHomeOrSavedList = countriesDatabase.getCountries();
@@ -128,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                         string = responseBody.string();
 
                     countriesDatabase.setCountriesStr(string);
-                    updateCountriesList();
+                    createCountriesList();
 
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -136,4 +144,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }
